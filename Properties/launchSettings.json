@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "OLLama chat": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}
