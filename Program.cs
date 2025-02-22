@@ -13,19 +13,31 @@ var chatHistory = new List<ChatMessage>();
 
 while (true)
 {
-    Console.WriteLine("Your prompt:");
-    var userPrompt = Console.ReadLine();
-    chatHistory.Add(new ChatMessage(ChatRole.User, userPrompt));
-
-    Console.WriteLine("AI Response:");
-    var chatResponse = new StringBuilder();
-
-    await foreach (var item in chatClient.GetStreamingResponseAsync(chatHistory))
+    try
     {
-        Console.Write(item.Text);
-        chatResponse.Append(item.Text);
-    }
+		Console.WriteLine("Your prompt:");
+		var userPrompt = Console.ReadLine();
+		chatHistory.Add(new ChatMessage(ChatRole.User, userPrompt));
 
-    chatHistory.Add(new ChatMessage(ChatRole.Assistant, chatResponse.ToString()));
-    Console.WriteLine();
+		Console.WriteLine("AI Response:");
+		var chatResponse = new StringBuilder();
+
+		await foreach (var item in chatClient.GetStreamingResponseAsync(chatHistory))
+		{
+			Console.Write(item.Text);
+			chatResponse.Append(item.Text);
+		}
+
+		chatHistory.Add(new ChatMessage(ChatRole.Assistant, chatResponse.ToString()));
+		Console.WriteLine();
+	}
+    catch (HttpRequestException ex)
+    {
+        Console.WriteLine($"{ex.Message}, please run the OllamaChat docker container if not already running.");
+
+	}
+	catch (Exception ex)
+	{
+		Console.WriteLine(ex.Message);
+	}
 }
