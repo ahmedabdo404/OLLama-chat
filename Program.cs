@@ -15,11 +15,11 @@ while (true)
 {
     try
     {
-		Console.WriteLine("Your prompt:");
+		Console.WriteLine("Ask anything:");
 		var userPrompt = Console.ReadLine();
 		chatHistory.Add(new ChatMessage(ChatRole.User, userPrompt));
 
-		Console.WriteLine("AI Response:");
+		Console.WriteLine("Response:");
 		var chatResponse = new StringBuilder();
 
 		await foreach (var item in chatClient.GetStreamingResponseAsync(chatHistory))
@@ -33,7 +33,7 @@ while (true)
 	}
     catch (HttpRequestException ex)
     {
-        Console.WriteLine($"{ex.Message}, please run the OllamaChat docker container if not already running.");
+        Console.WriteLine($"{ex.Message}, please run the ollama docker container if not already running.");
 
 	}
 	catch (Exception ex)
